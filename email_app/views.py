@@ -1,7 +1,7 @@
 # hello
 
 from django.shortcuts import render, redirect
-from myproject.forms import EmailForm
+from email_app.forms import EmailForm
 from django.http import HttpResponseRedirect
 
 def add_email(request):

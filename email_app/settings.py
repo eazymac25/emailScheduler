@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'myproject'
+    'email_app.apps.EmailAppConfig'
 ]
 
 MIDDLEWARE = [
@@ -50,12 +50,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'myproject.urls'
+ROOT_URLCONF = 'email_app.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['./templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -68,7 +68,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'myproject.wsgi.application'
+WSGI_APPLICATION = 'email_app.wsgi.application'
 
 
 # Database

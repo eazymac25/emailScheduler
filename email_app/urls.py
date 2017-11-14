@@ -15,9 +15,16 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from myproject import views
+from email_app import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.add_email, name='add_email'),
+]
+
+# Use include() to add URLS from the catalog application 
+from django.conf.urls import include
+#Add Django site authentication urls (for login, logout, password management)
+urlpatterns += [
+    url(r'^accounts/', include('django.contrib.auth.urls')),
 ]
