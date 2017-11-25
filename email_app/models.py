@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django_unixdatetimefield import UnixDateTimeField
 
 class EmailUser(models.Model):
 	
@@ -39,6 +40,35 @@ class Event(models.Model):
 
 
 class Notification(models.Model):
-	pass
+	
+	email_user = models.ForeignKey('EmailUser', on_delete=models.SET_NULL, null=True)
+	recipient = models.ForeignKey('Recipient', on_delete=models.SET_NULL, null=True)
+	event = models.ForeignKey('Event', on_delete=models.SET_NULL, null=True)
+	start_date = models.DateField(null=True, blank=True)
+	end_date = models.DateField(null=True, blank=True)
+	next_notify_date = UnixDateTimeField()
+	max_repeats = models.IntegerField(null=True)
+
+	ACTIVE = 'Y'
+	INACTIVE = 'N'
+
+	IS_ACTIVE_OPTS = (
+		(ACTIVE, 'ACTIVE'),
+		(INACTIVE, 'INACTIVE')
+	)
+
+	is_active = models.CharField(max_length=1, choices=IS_ACTIVE_OPTS)
+
+	DAY = 86400
+	WEEK = 604800
+	MONTH = 2629746
+
+	RECUR_OPTS = (
+		(DAY, 'DAILY'),
+		(WEEK, 'WEEKLY'),
+		(MONTH, 'MONTHLY')
+	)
+
+	recurrance = models.IntegerField(null=True, choices=RECUR_OPTS)
 
 
