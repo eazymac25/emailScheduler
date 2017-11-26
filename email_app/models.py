@@ -2,30 +2,19 @@ from django.db import models
 from django.contrib.auth.models import User
 from django_unixdatetimefield import UnixDateTimeField
 
-class EmailUser(models.Model):
-	
-	user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+class Recipient(models.Model):
+
 	first_name = models.CharField(max_length=100)
 	last_name = models.CharField(max_length=100)
 	email_address = models.CharField(max_length=100)
+	user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+	relationship = models.ForeignKey('Relationship', on_delete=models.SET_NULL, null=True)
 
 
 class Relationship(models.Model):
 
 	name = models.CharField(max_length=100, help_text='Enter exhaustive list of supported relationships')
 
-
-class Recipient(models.Model):
-
-	first_name = models.CharField(max_length=100)
-	last_name = models.CharField(max_length=100)
-	email_address = models.CharField(max_length=100)
-	email_user = models.ForeignKey('EmailUser', on_delete=models.SET_NULL, null=True)
-	relationship = models.ForeignKey('Relationship', on_delete=models.SET_NULL, null=True)
-
-class Recur(models.Model):
-
-	name = models.CharField(max_length=100)
 
 class EventType(models.Model):
 
@@ -36,19 +25,20 @@ class Event(models.Model):
 
 	event_type = models.ForeignKey('EventType', on_delete=models.SET_NULL, null=True)
 	event_name = models.CharField(max_length=100)
-	recur = models.ForeignKey('Recur', on_delete=models.SET_NULL, null=True)
 
 
 class Notification(models.Model):
 	
-	email_user = models.ForeignKey('EmailUser', on_delete=models.SET_NULL, null=True)
+	user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 	recipient = models.ForeignKey('Recipient', on_delete=models.SET_NULL, null=True)
 	event = models.ForeignKey('Event', on_delete=models.SET_NULL, null=True)
 	start_date = models.DateField(null=True, blank=True)
 	end_date = models.DateField(null=True, blank=True)
-	next_notify_date = UnixDateTimeField()
+	next_notify_date = UnixDateTimeField(null=True)
 	max_repeats = models.IntegerField(null=True)
+	notify_count = models.IntegerField(null=True, default=0)
 
+	# define active vs inactive chars
 	ACTIVE = 'Y'
 	INACTIVE = 'N'
 
@@ -57,18 +47,21 @@ class Notification(models.Model):
 		(INACTIVE, 'INACTIVE')
 	)
 
-	is_active = models.CharField(max_length=1, choices=IS_ACTIVE_OPTS)
+	is_active = models.CharField(max_length=1, choices=IS_ACTIVE_OPTS, default=ACTIVE)
 
+	# define time periods in seconds
 	DAY = 86400
 	WEEK = 604800
 	MONTH = 2629746
+	YEAR = 31557600
 
 	RECUR_OPTS = (
 		(DAY, 'DAILY'),
 		(WEEK, 'WEEKLY'),
-		(MONTH, 'MONTHLY')
+		(MONTH, 'MONTHLY'),
+		(YEAR, 'YEARLY')
 	)
 
-	recurrance = models.IntegerField(null=True, choices=RECUR_OPTS)
+	recurrance = models.IntegerField(choices=RECUR_OPTS, default=YEAR)
 
 
