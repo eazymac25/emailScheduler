@@ -11,6 +11,7 @@ def add_email(request):
 
 		if form.is_valid():
 			print(form.cleaned_data)
+			form = EmailForm()
 			#return HttpResponseRedirect('/thanks/')
 	else:
 		form = EmailForm()

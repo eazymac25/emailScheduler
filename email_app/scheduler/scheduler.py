@@ -1,0 +1,1 @@
+# this will be the script to query db and send email

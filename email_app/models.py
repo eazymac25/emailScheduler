@@ -63,5 +63,3 @@ class Notification(models.Model):
 	)
 
 	recurrance = models.IntegerField(choices=RECUR_OPTS, default=YEAR)
-
-
