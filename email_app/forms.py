@@ -25,3 +25,4 @@ class NotificationForm(forms.Form):
 	recipient_first_name = forms.CharField(label='Recipient First Name', max_length=100)
 	recipient_relationship = forms.CharField(label='Relationship', max_length=100)
 	event = forms.ChoiceField(label='Event', widget=forms.Select(), choices=self.EVENT_LIST, default=0)
+	start_date = forms.DateField()
