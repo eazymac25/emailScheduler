@@ -33,3 +33,7 @@ urlpatterns += [
 urlpatterns += [
     url(r'^accounts/password_reset$', auth_views.password_reset, name='password_reset'),
 ]
+
+urlpatterns += [
+    url(r'^signup/$', views.signup, name='signup')
+]

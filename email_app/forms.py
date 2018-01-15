@@ -1,5 +1,8 @@
 # forms.py
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+
 from email_app.models import Notification
 
 
@@ -9,6 +12,16 @@ class EmailForm(forms.Form):
 	"""
 	your_name = forms.CharField(label='Your name', max_length=100)
 	your_email = forms.CharField(label='Your email', max_length=100)
+
+
+class SignUpForm(UserCreationForm):
+	first_name = forms.CharField(label='First Name', max_length=34)
+	last_name = forms.CharField(label='Last Name', max_length=34)
+	email = forms.EmailField(label='Email')
+	
+	class Meta:
+		model = User
+		fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2', )
 
 
 class NotificationForm(forms.Form):
@@ -42,16 +55,8 @@ class NotificationForm(forms.Form):
 	start_date = forms.DateField(label='Start Date')
 	end_date = forms.DateField(label='End Date')
 	repeat = forms.IntegerField(label='Repeat')
-	recurrance = forms.ChoiceField(label='Recurrance', choices=RECUR_OPTS)
+	frequency = forms.ChoiceField(label='Frequency', choices=RECUR_OPTS)
 
-class ModelNotificationForm(forms.ModelForm):
-	"""
-	We probably can't use the built in modelform because we introduced complexity into the 
-	Notification data model by splitting everything into multiple tables
-	"""
-	class Meta:
-		model = Notification
-		fields = ['recipient']
 
 
 
