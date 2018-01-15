@@ -24,8 +24,12 @@ def create_user(request):
 def signup(request):
 	if request.method == 'POST':
 		form = SignUpForm(request.POST)
-		return redirect('home')
-		pass
+		next_url = '/'
+		try:
+			next_url = request.POST['next']
+		except KeyError as e:
+			print('next paramter DNE')
+		return redirect(next_url)
 	else:
 		form = SignUpForm()
 	return render(request, 'signup/signup.html', {'form': form})
