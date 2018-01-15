@@ -30,19 +30,19 @@ class NotificationForm(forms.Form):
 	YEAR = 31557600
 
 	RECUR_OPTS = (
-		(DAY, 'DAILY'),
-		(WEEK, 'WEEKLY'),
+		(YEAR, 'YEARLY'),
 		(MONTH, 'MONTHLY'),
-		(YEAR, 'YEARLY')
+		(WEEK, 'WEEKLY'),
+		(DAY, 'DAILY'),
 	)
 
 	recipient_first_name = forms.CharField(label='Recipient First Name', max_length=100)
 	recipient_relationship = forms.CharField(label='Relationship', max_length=100)
-	event = forms.ChoiceField(label='Event', widget=forms.Select(), choices=self.EVENT_LIST, default=0)
+	event = forms.ChoiceField(label='Event', widget=forms.Select(), choices=EVENT_LIST)
 	start_date = forms.DateField(label='Start Date')
 	end_date = forms.DateField(label='End Date')
 	repeat = forms.IntegerField(label='Repeat')
-	recurrance = forms.IntegerField(label='Recurrance', choices=self.RECUR_OPTS, default=self.YEAR)
+	recurrance = forms.ChoiceField(label='Recurrance', choices=RECUR_OPTS)
 
 class ModelNotificationForm(forms.ModelForm):
 	"""
